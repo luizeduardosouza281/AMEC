@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMEC Soluções Industriais</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2a4a;
+    --navy-dark: #0f1c32;
+    --navy-mid: #1e3560;
+    --steel: #3a4a6a;
+    --accent: #2a6dd9;
+    --accent-light: #4a8eff;
+    --silver: #c0c8d8;
+    --white: #f0f4ff;
+    --text-dim: #8899bb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--navy-dark);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 0 5%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10, 16, 28, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(42, 109, 217, 0.25);
+  }
+
+  .nav-logo {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--accent-light); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--silver);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--accent-light); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: var(--white) !important;
+    padding: 8px 22px;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.3s !important;
+  }
+  .nav-cta:hover { background: var(--accent-light) !important; color: var(--white) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 0 8%;
+    padding-top: 70px;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(42,109,217,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(42,109,217,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridShift 20s linear infinite;
+  }
+  @keyframes gridShift {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(60px); }
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(42,109,217,0.18) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    animation: pulse 6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 700px; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(42,109,217,0.15);
+    border: 1px solid rgba(42,109,217,0.4);
+    padding: 6px 16px;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: var(--accent-light);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease forwards;
+    opacity: 0;
+  }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--accent-light); border-radius: 50%; animation: blink 2s infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+  .hero h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -1px;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+    opacity: 0;
+  }
+  .hero h1 .blue { color: var(--accent-light); }
+  .hero h1 .outline {
+    -webkit-text-stroke: 2px var(--silver);
+    color: transparent;
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--silver);
+    line-height: 1.7;
+    max-width: 500px;
+    font-weight: 300;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+    opacity: 0;
+  }
+
+  .hero-divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin: 2rem 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+    opacity: 0;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+    opacity: 0;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: var(--white);
+    padding: 14px 32px;
+    text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: background 0.3s, transform 0.3s;
+  }
+  .btn-primary:hover { background: var(--accent-light); transform: translateX(4px); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--steel);
+    color: var(--silver);
+    padding: 14px 32px;
+    text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .btn-secondary:hover { border-color: var(--accent-light); color: var(--accent-light); }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+    opacity: 0;
+  }
+  .stat-num {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--accent-light);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── DIAGONAL STRIP ── */
+  .strip {
+    background: var(--accent);
+    padding: 18px 8%;
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .strip::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 40px;
+    background: var(--navy-dark);
+    clip-path: polygon(0 0, 100% 0, 70% 100%, 0 100%);
+  }
+  .strip-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 3px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(255,255,255,0.9);
+  }
+  .strip-item svg { flex-shrink: 0; }
+  .strip-sep { color: rgba(255,255,255,0.3); font-size: 1.5rem; }
+
+  /* ── SECTIONS COMMON ── */
+  section { padding: 100px 8%; }
+
+  .section-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+  .section-tag::before { content: ''; width: 30px; height: 1px; background: var(--accent); }
+
+  .section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.1;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-desc {
+    color: var(--text-dim);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 520px;
+    font-weight: 300;
+  }
+
+  /* ── SERVICES ── */
+  #servicos { background: var(--navy-dark); }
+
+  .services-header { margin-bottom: 4rem; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+
+  .service-card {
+    background: var(--navy);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s, background 0.4s;
+    cursor: default;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .service-card:hover { transform: translateY(-6px); background: var(--navy-mid); }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(42,109,217,0.12);
+    border: 1px solid rgba(42,109,217,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.4s;
+  }
+  .service-card:hover .service-icon { background: rgba(42,109,217,0.25); }
+
+  .service-num {
+    position: absolute;
+    top: 2rem; right: 2rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: rgba(42,109,217,0.08);
+    line-height: 1;
+  }
+
+  .service-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+
+  .service-desc {
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 1.5rem;
+  }
+  .service-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    background: rgba(42,109,217,0.1);
+    padding: 3px 10px;
+  }
+
+  /* ── ABOUT ── */
+  #sobre {
+    background: var(--navy);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+  .about-big-letter {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18rem;
+    font-weight: 700;
+    color: rgba(42,109,217,0.06);
+    line-height: 1;
+    position: absolute;
+    top: -3rem;
+    left: -2rem;
+    pointer-events: none;
+    user-select: none;
+  }
+  .about-card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    position: relative;
+    z-index: 2;
+  }
+  .about-card {
+    background: var(--navy-dark);
+    padding: 2rem;
+    border-top: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .about-card:hover { border-color: var(--accent); }
+  .about-card-num {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--accent-light);
+    line-height: 1;
+  }
+  .about-card-label {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  .about-text .section-desc { margin-bottom: 2rem; }
+
+  .values-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+  .value-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 1rem 1.2rem;
+    background: rgba(42,109,217,0.06);
+    border-left: 2px solid var(--accent);
+    transition: background 0.3s;
+  }
+  .value-item:hover { background: rgba(42,109,217,0.12); }
+  .value-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-light);
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .value-title { font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 1rem; }
+  .value-desc { font-size: 0.82rem; color: var(--text-dim); margin-top: 2px; }
+
+  /* ── PROCESS ── */
+  #processo { background: var(--navy-dark); }
+
+  .process-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), rgba(42,109,217,0.1));
+    z-index: 0;
+  }
+  .process-step { padding: 0 1rem; position: relative; z-index: 1; }
+  .step-num-wrap {
+    width: 56px;
+    height: 56px;
+    background: var(--navy);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.3s;
+  }
+  .process-step:hover .step-num-wrap { background: var(--accent); }
+  .step-num {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent-light);
+  }
+  .process-step:hover .step-num { color: var(--white); }
+  .step-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+  }
+  .step-desc { font-size: 0.8rem; color: var(--text-dim); line-height: 1.7; }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--navy-mid) 100%);
+    padding: 80px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-band::before {
+    content: 'AMEC';
+    position: absolute;
+    right: 5%;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.04);
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+  }
+  .cta-band h2 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 700;
+    max-width: 500px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-band p { font-size: 0.95rem; color: rgba(255,255,255,0.75); margin-top: 0.5rem; font-weight: 300; }
+  .cta-band-actions { display: flex; gap: 1rem; flex-wrap: wrap; position: relative; z-index: 1; }
+  .btn-white {
+    background: var(--white);
+    color: var(--navy-dark);
+    padding: 14px 32px;
+    text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    font-weight: 600;
+    transition: opacity 0.3s;
+  }
+  .btn-white:hover { opacity: 0.9; }
+
+  /* ── CONTACT ── */
+  #contato { background: var(--navy); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .contact-info-items { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2.5rem; }
+  .contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.2rem;
+    background: rgba(42,109,217,0.06);
+    border: 1px solid rgba(42,109,217,0.15);
+    transition: border-color 0.3s;
+  }
+  .contact-info-item:hover { border-color: rgba(42,109,217,0.5); }
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(42,109,217,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-info-label { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
+  .contact-info-value { font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 1.05rem; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: var(--navy-dark);
+    border: 1px solid var(--steel);
+    color: var(--white);
+    padding: 12px 16px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+    resize: vertical;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--accent); }
+  .form-group select option { background: var(--navy-dark); }
+  .form-group textarea { min-height: 110px; }
+
+  .form-submit {
+    align-self: flex-start;
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    padding: 14px 36px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: background 0.3s;
+  }
+  .form-submit:hover { background: var(--accent-light); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy-dark);
+    border-top: 1px solid rgba(42,109,217,0.2);
+    padding: 60px 8% 30px;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-brand-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .footer-brand-name span { color: var(--accent-light); }
+  .footer-tagline { font-size: 0.75rem; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 1.2rem; }
+  .footer-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.8; font-weight: 300; }
+  .footer-col-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 1.2rem;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-links a {
+    text-decoration: none;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-links a::before { content: '›'; color: var(--accent); }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .footer-bottom-icons { display: flex; gap: 1rem; }
+  .social-icon {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--steel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .social-icon:hover { border-color: var(--accent-light); color: var(--accent-light); }
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-line {
+    position: absolute;
+    bottom: 2rem;
+    left: 8%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeUp 0.8s ease 1s forwards;
+    opacity: 0;
+    z-index: 2;
+  }
+  .scroll-line span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .scroll-bar {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollAnim 2s ease-in-out infinite;
+  }
+  @keyframes scrollAnim {
+    0%, 100% { transform: scaleY(1); opacity: 0.8; }
+    50% { transform: scaleY(0.5); opacity: 0.3; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    #sobre { grid-template-columns: 1fr; gap: 3rem; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .process-steps::before { display: none; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .services-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .cta-band { text-align: center; justify-content: center; }
+    .footer-top { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AM<span>EC</span></div>
+  <ul class="nav-links">
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#contato" class="nav-cta">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">Soluções Industriais</div>
+    <h1>
+      AMEC<br>
+      <span class="blue">SOLUÇÕES</span><br>
+      <span class="outline">INDUSTRIAIS</span>
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub">Integramos automação, elétrica, civil e mecânica em soluções completas para a sua indústria. Excelência técnica com resultados que transformam.</p>
+    <div class="hero-btns">
+      <a href="#servicos" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+        Nossos Serviços
+      </a>
+      <a href="#contato" class="btn-secondary">Fale Conosco</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Projetos Entregues</div>
+      </div>
+      <div>
+        <div class="stat-num">4</div>
+        <div class="stat-label">Áreas de Atuação</div>
+      </div>
+      <div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Anos de Mercado</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-line">
+    <div class="scroll-bar"></div>
+    <span>Rolar</span>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-item">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"></path></svg>
+    Automação Industrial
+  </div>
+  <span class="strip-sep">/</span>
+  <div class="strip-item">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+    Elétrica Industrial
+  </div>
+  <span class="strip-sep">/</span>
+  <div class="strip-item">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+    Civil Industrial
+  </div>
+  <span class="strip-sep">/</span>
+  <div class="strip-item">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"></path></svg>
+    Mecânica Industrial
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="servicos">
+  <div class="services-header">
+    <div>
+      <div class="section-tag">Áreas de Atuação</div>
+      <h2 class="section-title">Soluções Integradas<br>para sua Indústria</h2>
+    </div>
+    <p class="section-desc">Oferecemos uma abordagem multidisciplinar, unindo quatro pilares fundamentais para entregar projetos completos e eficientes.</p>
+  </div>
+
+  <div class="services-grid">
+
+    <!-- Automação -->
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4a8eff" stroke-width="1.8"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"></path></svg>
+      </div>
+      <div class="service-title">Automação</div>
+      <div class="service-desc">Implementamos sistemas de automação industrial de ponta, integrando CLPs, SCADA, robótica e IIoT para otimizar sua linha de produção com máxima eficiência.</div>
+      <div class="service-tags">
+        <span class="service-tag">CLP / PLC</span>
+        <span class="service-tag">SCADA</span>
+        <span class="service-tag">Robótica</span>
+        <span class="service-tag">IIoT</span>
+      </div>
+    </div>
+
+    <!-- Mecânica -->
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4a8eff" stroke-width="1.8"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"></path></svg>
+      </div>
+      <div class="service-title">Mecânica</div>
+      <div class="service-desc">Projetos e manutenção mecânica de equipamentos industriais, fabricação de peças sob medida, retrofitting e modernização de maquinário com engenharia especializada.</div>
+      <div class="service-tags">
+        <span class="service-tag">Manutenção</span>
+        <span class="service-tag">Retrofit</span>
+        <span class="service-tag">Fabricação</span>
+        <span class="service-tag">Projetos</span>
+      </div>
+    </div>
+
+    <!-- Elétrica -->
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4a8eff" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+      </div>
+      <div class="service-title">Elétrica</div>
+      <div class="service-desc">Instalações e projetos elétricos industriais, quadros de comando, distribuição de energia, eficiência energética e conformidade com normas NBR e NR-10.</div>
+      <div class="service-tags">
+        <span class="service-tag">Alta Tensão</span>
+        <span class="service-tag">Quadros</span>
+        <span class="service-tag">NR-10</span>
+        <span class="service-tag">Eficiência</span>
+      </div>
+    </div>
+
+    <!-- Civil -->
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <div class="service-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4a8eff" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      </div>
+      <div class="service-title">Civil</div>
+      <div class="service-desc">Construção e reforma de plantas industriais, galpões, fundações para equipamentos, obras de infraestrutura e adequação de instalações para normas regulamentadoras.</div>
+      <div class="service-tags">
+        <span class="service-tag">Construção</span>
+        <span class="service-tag">Reforma</span>
+        <span class="service-tag">Fundações</span>
+        <span class="service-tag">Infraestrutura</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="sobre">
+  <div class="about-visual">
+    <div class="about-big-letter">A</div>
+    <div class="about-card-grid">
+      <div class="about-card">
+        <div class="about-card-num">500+</div>
+        <div class="about-card-label">Projetos Concluídos</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-num">15+</div>
+        <div class="about-card-label">Anos de Experiência</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-num">98%</div>
+        <div class="about-card-label">Clientes Satisfeitos</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-num">4</div>
+        <div class="about-card-label">Pilares de Atuação</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-text">
+    <div class="section-tag">Sobre a AMEC</div>
+    <h2 class="section-title">Uma empresa,<br>quatro especialidades,<br><span style="color:var(--accent-light)">resultado completo.</span></h2>
+    <p class="section-desc">A AMEC Soluções Industriais nasceu da visão de integrar as principais disciplinas da engenharia industrial em um único parceiro estratégico. Eliminamos a complexidade de gerenciar múltiplos fornecedores.</p>
+
+    <div class="values-list">
+      <div class="value-item">
+        <div class="value-dot"></div>
+        <div>
+          <div class="value-title">Excelência Técnica</div>
+          <div class="value-desc">Equipe altamente qualificada com certificações nas áreas de automação, elétrica e engenharia civil.</div>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-dot"></div>
+        <div>
+          <div class="value-title">Integração Total</div>
+          <div class="value-desc">Gerenciamento unificado de projetos multidisciplinares com coordenação entre todas as frentes de trabalho.</div>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-dot"></div>
+        <div>
+          <div class="value-title">Segurança em Primeiro Lugar</div>
+          <div class="value-desc">Todos os projetos são desenvolvidos com rigor nos padrões de segurança e normas regulamentadoras.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="processo">
+  <div class="process-header">
+    <div>
+      <div class="section-tag">Como Trabalhamos</div>
+      <h2 class="section-title">Nosso Processo</h2>
+    </div>
+    <p class="section-desc" style="max-width:360px">Do diagnóstico à entrega, acompanhamos cada etapa com transparência e comprometimento.</p>
+  </div>
+
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-num-wrap"><div class="step-num">01</div></div>
+      <div class="step-title">Diagnóstico</div>
+      <div class="step-desc">Levantamento detalhado das necessidades, visita técnica e análise completa do ambiente industrial.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num-wrap"><div class="step-num">02</div></div>
+      <div class="step-title">Proposta</div>
+      <div class="step-desc">Desenvolvimento de escopo técnico, cronograma e proposta comercial transparente e detalhada.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num-wrap"><div class="step-num">03</div></div>
+      <div class="step-title">Projeto</div>
+      <div class="step-desc">Elaboração de projetos de engenharia com documentação técnica completa e aprovações necessárias.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num-wrap"><div class="step-num">04</div></div>
+      <div class="step-title">Execução</div>
+      <div class="step-desc">Implementação por equipes especializadas com gestão de qualidade e segurança em todas as etapas.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num-wrap"><div class="step-num">05</div></div>
+      <div class="step-title">Comissionamento</div>
+      <div class="step-desc">Testes, startup, treinamento de equipes e suporte pós-entrega para garantir plena operação.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div>
+    <h2>Pronto para otimizar<br>sua operação industrial?</h2>
+    <p>Fale com nossos especialistas e descubra como a AMEC pode transformar sua planta.</p>
+  </div>
+  <div class="cta-band-actions">
+    <a href="#contato" class="btn-white">Solicitar Orçamento</a>
+    <a href="tel:+5500000000000" class="btn-secondary" style="border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8)">Ligar Agora</a>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contato">
+  <div class="contact-grid">
+    <div>
+      <div class="section-tag">Fale Conosco</div>
+      <h2 class="section-title">Entre em<br>Contato</h2>
+      <p class="section-desc">Nossa equipe de especialistas está pronta para analisar seu projeto e apresentar a melhor solução.</p>
+
+      <div class="contact-info-items">
+        <div class="contact-info-item">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4a8eff" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.72 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.29 6.29l.82-.82a2 2 0 0 1 2.11-.45c.91.36 1.85.6 2.81.72a2 2 0 0 1 1.72 2z"></path></svg>
+          </div>
+          <div>
+            <div class="contact-info-label">Telefone</div>
+            <div class="contact-info-value">(00) 00000-0000</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4a8eff" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+          <div>
+            <div class="contact-info-label">E-mail</div>
+            <div class="contact-info-value">contato@amec.com.br</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4a8eff" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          </div>
+          <div>
+            <div class="contact-info-label">Localização</div>
+            <div class="contact-info-value">Brasil</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome Completo</label>
+            <input type="text" placeholder="Seu nome">
+          </div>
+          <div class="form-group">
+            <label>Empresa</label>
+            <input type="text" placeholder="Nome da empresa">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" placeholder="seu@email.com">
+          </div>
+          <div class="form-group">
+            <label>Telefone</label>
+            <input type="tel" placeholder="(00) 00000-0000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Área de Interesse</label>
+          <select>
+            <option value="">Selecione uma área</option>
+            <option>Automação Industrial</option>
+            <option>Elétrica Industrial</option>
+            <option>Civil Industrial</option>
+            <option>Mecânica Industrial</option>
+            <option>Solução Integrada (todas as áreas)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Mensagem</label>
+          <textarea placeholder="Descreva seu projeto ou necessidade..."></textarea>
+        </div>
+        <button class="form-submit">Enviar Mensagem →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">AM<span>EC</span></div>
+      <div class="footer-tagline">Soluções Industriais</div>
+      <div class="footer-desc">Integramos automação, elétrica, civil e mecânica para entregar soluções industriais completas com excelência técnica e comprometimento.</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Serviços</div>
+      <ul class="footer-links">
+        <li><a href="#servicos">Automação Industrial</a></li>
+        <li><a href="#servicos">Elétrica Industrial</a></li>
+        <li><a href="#servicos">Civil Industrial</a></li>
+        <li><a href="#servicos">Mecânica Industrial</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Empresa</div>
+      <ul class="footer-links">
+        <li><a href="#sobre">Sobre a AMEC</a></li>
+        <li><a href="#processo">Nosso Processo</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contato</div>
+      <ul class="footer-links">
+        <li><a href="tel:+5500000000000">(00) 00000-0000</a></li>
+        <li><a href="mailto:contato@amec.com.br">contato@amec.com.br</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 AMEC Soluções Industriais. Todos os direitos reservados.</span>
+    <div class="footer-bottom-icons">
+      <a href="#" class="social-icon">in</a>
+      <a href="#" class="social-icon">ig</a>
+      <a href="#" class="social-icon">fb</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Intersection Observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.style.animation = 'fadeUp 0.7s ease forwards';
+        observer.unobserve(el.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.service-card, .about-card, .process-step, .contact-info-item').forEach(el => {
+    el.style.opacity = '0';
+    observer.observe(el);
+  });
+
+  // Smooth nav highlight
+  const navLinks = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    document.querySelectorAll('section[id], div[id]').forEach(section => {
+      if (window.scrollY >= section.offsetTop - 100) current = section.id;
+    });
+    navLinks.forEach(link => {
+      link.style.color = link.getAttribute('href') === '#' + current ? '#4a8eff' : '';
+    });
+  });
+
+  // Counter animation
+  function animateCounter(el, target) {
+    let start = 0;
+    const duration = 1500;
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const val = Math.floor(progress * target);
+      el.textContent = val + (el.dataset.suffix || '');
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+</script>
+</body>
+</html>
